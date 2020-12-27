@@ -301,7 +301,11 @@ public class Commands implements CommandExecutor {
 
             }
 
+            else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")) {
 
+                sender.sendMessage(CoinManager.getBalanceTop(1));
+
+            }
 
             else {
 

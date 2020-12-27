@@ -1,0 +1,10 @@
+name: MobCoins
+author: Mackenzie Mollo
+main: net.mackenziemolloy.MobCoins.MobCoins
+api-version: 1.8
+version: 1.0
+softdepend: [ShopGUIPlus, PlaceholderAPI]
+commands:
+  mobcoins:
+    aliases: [mobcoin, mc, mcoins, mobc]
+    description: "Mobcoins"

@@ -1,0 +1,44 @@
+options:
+  #
+  # When enabled, it tells you the mob type you just killed,
+  # useful when adding mob coin values to the config
+  #
+  debug: false
+  mobs:
+    ZOMBIE:
+      amount: 1.5
+
+messages:
+  no_permission: "&cYou do not have permission"
+  reloaded_config: "&cConfig reloaded"
+  unknown_command: "&7Unknown sub-command, use &c/mobcoins &7for help."
+  player_not_found: "&c'{player}' is not a player."
+  not_a_number: "&c'{number}' &cis not a number."
+  help:
+    - "&7 &7"
+    - "&e&lMOBCOINS"
+    - "&7 &7"
+    - "&7Mobcoins are a currency obtained by killing mobs, which can be used to purchase goods."
+    - "&7 &7"
+    - "&e/mobcoin balance ● &7Shows how many mobcoins you have"
+    - "&7 &7"
+  help_staff:
+    - "&7 &7"
+    - "&e&lMOBCOINS"
+    - "&7 &7"
+    - "&7Mobcoins are a currency obtained by killing mobs, which can be used to purchase goods."
+    - "&7 &7"
+    - "&e/mobcoin balance (player) ● &7Shows how many mobcoins you have"
+    - "&e/mobcoin add (player) (amount) ● &7Adds mobcoins to a player's balance"
+    - "&e/mobcoin set (player) (amount) ● &7Sets a player's balance"
+    - "&e/mobcoin remove (player) (amount) ● &7Removes mobcoins from a plaer's balance"
+    - "&c/mobcoin reload ● &7Reloads plugin configuration"
+    - "&7 &7"
+  balance: "&e&lMobCoins ● &fYou have &e{balance} Mobcoins&f."
+  balance_other: "&e&lMobCoins ● &e{player} &fhas &e{balance} Mobcoins&f."
+  balance_add_usage: "&cIncorrect usage; &7/mobcoin add (player) (amount)"
+  balance_add_added: "&c&lMobCoins ● &7Added &c{amount} MobCoins&7 to &c{player}'s&7 balance."
+  balance_set_usage: "&cIncorrect usage; &7/mobcoin set (player) (amount)"
+  balance_set_setted: "&c&lMobCoins ● &7Set &c{player}'s &7balance to &c{amount}&7." #I know "setted" isn't a word, but I didn't want to call it "balance_set_set"
+  balance_remove_usage: "&cIncorrect usage; &7/mobcoin remove (player) (amount)"
+  balance_remove_removed: "&c&lMobCoins ● &7Remove &c{amount} Mobcoins&7 from &c{player}'s&7 balance."

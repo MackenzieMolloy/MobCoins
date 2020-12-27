@@ -106,31 +106,31 @@ public class CoinManager {
 
         StringBuilder balances = new StringBuilder();
 
-        if(sortedMap.size() < amountPerPage) {
+        if(page > Math.round(sortedMap.size()/amountPerPage)+1) page = Math.round(sortedMap.size()/amountPerPage)+1;
 
-            for(int i = 0; i < sortedMap.size(); i++) {
+        for(int i = (amountPerPage*page)-amountPerPage; i < (amountPerPage*page); i++) {
 
-                String playerUUID = sortedMap.keySet().toArray()[i].toString();
-                String playerBalance = sortedMap.values().toArray()[i].toString();
+            if(sortedMap.keySet().size() <= i) continue;
 
-                String playerName;
+            String playerUUID = sortedMap.keySet().toArray()[i].toString();
+            String playerBalance = sortedMap.values().toArray()[i].toString();
 
-                if(Bukkit.getPlayer(UUID.fromString(playerUUID)) != null) {
-                    playerName = Bukkit.getPlayer(UUID.fromString(playerUUID)).getName();
-                }
-                else {
-                    playerName = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName();
-                }
+            String playerName = "";
 
-
-                String addToList = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_top_format")
-                        .replace("{placement}", String.valueOf(i+1)).replace("{player}", playerName).replace("{amount}", playerBalance)); //Bukkit.getPlayer(playerUUID).getName()
-                balances.append(addToList).append("\n");
-
+            if(Bukkit.getPlayer(UUID.fromString(playerUUID)) != null) {
+                playerName = Bukkit.getPlayer(UUID.fromString(playerUUID)).getName();
+            }
+            else {
+                playerName = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName();
             }
 
-        }
+            if(playerName == null) continue;
 
+            String addToList = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_top_format")
+                    .replace("{placement}", String.valueOf(i+1)).replace("{player}", playerName).replace("{amount}", playerBalance)); //Bukkit.getPlayer(playerUUID).getName()
+            balances.append(addToList).append("\n");
+
+        }
 
         StringBuilder balanceTopMessage = new StringBuilder();
 

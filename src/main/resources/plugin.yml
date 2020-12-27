@@ -8,3 +8,22 @@ commands:
   mobcoins:
     aliases: [mobcoin, mc, mcoins, mobc]
     description: "Mobcoins"
+permissions:
+  mobcoins.help:
+    description: Main help message
+  mobcoins.help.staff:
+    description: Staff help message
+  mobcoins.command.balance:
+    description: view balance
+  mobcoins.admin.balance:
+    description: view other's balance
+  mobcoins.admin.add:
+    description: add mobcoins to a player
+  mobcoins.admin.remove:
+    description: remove mobcoins from a player
+  mobcoins.admin.set:
+    description: set a player's mobcoins
+  mobcoins.command.baltop:
+    description: view baltop
+  mobcoins.admin.reload:
+    description: reload configs

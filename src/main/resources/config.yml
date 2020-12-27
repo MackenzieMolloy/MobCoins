@@ -32,6 +32,7 @@ messages:
     - "&7Mobcoins are a currency obtained by killing mobs, which can be used to purchase goods."
     - "&7 &7"
     - "&e/mobcoin balance ● &7Shows how many mobcoins you have"
+    - "&e/mobcoin baltop ● &7Shows everyone's balance in order"
     - "&7 &7"
   help_staff:
     - "&7 &7"

@@ -303,7 +303,30 @@ public class Commands implements CommandExecutor {
 
             else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")) {
 
-                sender.sendMessage(CoinManager.getBalanceTop(1));
+                if(sender.hasPermission("mobcoins.command.baltop")) {
+                    if (args.length >= 2) {
+
+                        if (NumberUtils.isNumber(args[1])) {
+
+                            sender.sendMessage(CoinManager.getBalanceTop(Integer.valueOf(args[1])));
+
+                        } else {
+
+                            sender.sendMessage(CoinManager.getBalanceTop(1));
+
+                        }
+
+                    } else {
+                        sender.sendMessage(CoinManager.getBalanceTop(1));
+                    }
+                }
+
+                else {
+
+                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
+                    sender.sendMessage(noPermission);
+
+                }
 
             }
 

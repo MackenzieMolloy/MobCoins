@@ -4,6 +4,7 @@ import net.mackenziemolloy.MobCoins.Events.MobDeathEvent;
 import net.mackenziemolloy.MobCoins.Utils.CommentedConfiguration;
 import net.mackenziemolloy.MobCoins.Utils.EconomyHook;
 import net.mackenziemolloy.MobCoins.Utils.PlaceHolders;
+import net.mackenziemolloy.MobCoins.Utils.ShopGUIPlusHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -15,8 +16,6 @@ public class MobCoins extends JavaPlugin {
     public CommentedConfiguration dataFile;
     public static MobCoins mobCoins;
 
-    private EconomyHook economyProvider;
-
     @Override
     public void onEnable() {
 
@@ -27,11 +26,7 @@ public class MobCoins extends JavaPlugin {
         generateFiles();
 
         if(getServer().getPluginManager().isPluginEnabled("ShopGUIPlus")) {
-
-
-            this.economyProvider = new EconomyHook();
-            net.brcdev.shopgui.ShopGuiPlusApi.registerEconomyProvider(economyProvider);
-
+            new ShopGUIPlusHook();
         }
 
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {

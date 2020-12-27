@@ -32,33 +32,33 @@ public class Commands implements CommandExecutor {
 
                 if (sender.hasPermission("mobcoins.help.staff")) {
 
-                    String helpStaffMessage = "";
+                    StringBuilder helpStaffMessage = new StringBuilder();
 
 
                     for(String item : mobCoins.configFile.getStringList("messages.help_staff")) {
 
                         String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
-                        helpStaffMessage += messageToAdd + "\n";
+                        helpStaffMessage.append(messageToAdd).append("\n");
 
                     }
 
-                    sender.sendMessage(helpStaffMessage);
+                    sender.sendMessage(helpStaffMessage.toString());
 
                 }
 
                 else if(sender.hasPermission("mobcoins.help")) {
 
-                    String helpMessage = "";
+                    StringBuilder helpMessage = new StringBuilder();
 
 
                     for(String item : mobCoins.configFile.getStringList("messages.help")) {
 
                         String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
-                        helpMessage += messageToAdd + "\n";
+                        helpMessage.append(messageToAdd).append("\n");
 
                     }
 
-                    sender.sendMessage(helpMessage);
+                    sender.sendMessage(helpMessage.toString());
 
                 }
 
@@ -300,6 +300,7 @@ public class Commands implements CommandExecutor {
                 }
 
             }
+
 
 
             else {

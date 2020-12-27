@@ -1,4 +1,9 @@
 options:
+  hooks:
+    #
+    # Allows you to use the "CUSTOM" currency in ShopGUIPlus for mobcoins
+    #
+    shopguiplus: true
   #
   # When enabled, it tells you the mob type you just killed,
   # useful when adding mob coin values to the config

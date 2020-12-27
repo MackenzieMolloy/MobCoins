@@ -26,7 +26,9 @@ public class MobCoins extends JavaPlugin {
         generateFiles();
 
         if(getServer().getPluginManager().isPluginEnabled("ShopGUIPlus")) {
-            new ShopGUIPlusHook();
+            if(configFile.getBoolean("options.hooks.shopguiplus")) {
+                new ShopGUIPlusHook();
+            }
         }
 
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {

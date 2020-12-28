@@ -8,6 +8,10 @@ options:
   # Should players be able to send money to themselves
   #
   can_pay_self: false
+  #
+  # What's the least amount of money someone can pay
+  #
+  minimum_pay_amount: 0.01
   hooks:
     #
     # Allows you to use the "CUSTOM" currency in ShopGUIPlus for mobcoins
@@ -21,8 +25,14 @@ options:
   #
   # The amount of mob coins a mob will give on death
   #
+
+  # FORMAT :-
+  #
+  # mobs:
+  #   (MOB NAME):
+  #     amount: (number of mobcoins to give)
+  #
   mobs:
-    # Mob Name (In Caps)
     ZOMBIE:
       # Amount of mob coins it will give
       amount: 1.5
@@ -61,7 +71,7 @@ messages:
   insufficient_funds: "&cYou do not have enough mobcoins."
   balance_pay_usage: "&cIncorrect usage; &7/mobcoin pay (player) (amount)"
   balance_pay_self: "&cYou cannot pay yourself."
-  balance_pay_nothing: "&cYou can't pay people 0 Mobcoins."
+  balance_pay_less_than: "&cYou can't pay people less than 0.01 Mobcoins."
   balance_pay_paid: "&e&lMobCoins ● &fYou have paid &e{amount} Mobcoins&f to &e{player}&f."
   balance_pay_paid_received: "&e&lMobCoins ● &fYou have received &e{amount} Mobcoins&f from &e{player}&f."
   balance_other_usage: "&cIncorrect usage; &7/mobcoin balance (player)"

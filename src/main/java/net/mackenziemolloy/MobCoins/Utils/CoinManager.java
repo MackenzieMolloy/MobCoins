@@ -120,12 +120,12 @@ public class CoinManager {
             }
         }
 
-        else if(Double.valueOf(amountString) <= 0) {
+        else if(Double.valueOf(amountString) <= mobCoins.configFile.getDouble("options.minimum_pay_amount")) {
 
             if(silent == false) {
 
-                String cantPayNothing = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_nothing"));
-                sender.sendMessage(cantPayNothing);
+                String cantPayLessThan = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_less_than"));
+                sender.sendMessage(cantPayLessThan);
 
             }
 

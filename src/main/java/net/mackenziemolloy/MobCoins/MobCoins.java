@@ -47,7 +47,7 @@ public class MobCoins extends JavaPlugin {
 
         configFile = CommentedConfiguration.loadConfiguration(config);
         try {
-            configFile.syncWithConfig(config, getResource("config.yml"), "stupid_option"); //decorations
+            configFile.syncWithConfig(config, getResource("config.yml"), "options.mobs"); //decorations
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

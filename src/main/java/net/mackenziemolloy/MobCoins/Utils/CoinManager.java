@@ -1,6 +1,7 @@
 package net.mackenziemolloy.MobCoins.Utils;
 
 import net.mackenziemolloy.MobCoins.MobCoins;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,7 +21,6 @@ public class CoinManager {
     public static void removeMobCoins(Player player, Double amount) {
 
         MobCoins mobCoins = MobCoins.getInstance();
-
 
         if(mobCoins.dataFile.get(player.getUniqueId().toString()) != null) {
 
@@ -69,7 +69,7 @@ public class CoinManager {
 
     }
 
-    public static void setMobCoins(Player player, Double amount) {
+    public static void setMobCoins(Player player, Double amount, Boolean silent) {
 
         MobCoins mobCoins = MobCoins.getInstance();
 
@@ -83,6 +83,82 @@ public class CoinManager {
 
             mobCoins.dataFile.set(player.getUniqueId().toString(), Math.abs(amount));
             mobCoins.saveFiles(false, true);
+
+        }
+
+    }
+
+    public static void transferMobCoins(Player sender, String receiverName, String amountString, Boolean silent) {
+
+        MobCoins mobCoins = MobCoins.getInstance();
+
+        if(Bukkit.getPlayerExact(receiverName) == null) {
+
+            if(silent == false) {
+                String playerNotFound = ChatColor.translateAlternateColorCodes('&',
+                        mobCoins.configFile.getString("messages.player_not_found").replace("{player}", receiverName));
+                sender.sendMessage(playerNotFound);
+            }
+
+        }
+
+        else if(sender.getName().equalsIgnoreCase(receiverName) && !mobCoins.configFile.getBoolean("options.can_pay_self")) {
+
+            if(silent == false) {
+                String cantPaySelf = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_self"));
+                sender.sendMessage(cantPaySelf);
+            }
+
+        }
+
+        else if (!amountString.matches("\\d+")) {
+
+            if(silent == false) {
+                String notANumber = ChatColor.translateAlternateColorCodes('&',
+                        mobCoins.configFile.getString("messages.not_a_number").replace("{number}", amountString));
+                sender.sendMessage(notANumber);
+            }
+        }
+
+        else if(Double.valueOf(amountString) <= 0) {
+
+            if(silent == false) {
+
+                String cantPayNothing = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_nothing"));
+                sender.sendMessage(cantPayNothing);
+
+            }
+
+        }
+
+        else if (mobCoins.dataFile.getDouble(sender.getUniqueId().toString()) < Double.valueOf(amountString)) {
+
+            if(silent == false) {
+                String insufficientFunds = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.insufficient_funds"));
+                sender.sendMessage(insufficientFunds);
+            }
+
+        }
+
+        else {
+
+            Player receiver = Bukkit.getPlayer(receiverName);
+            Double amount = Double.valueOf(amountString);
+
+            CoinManager.addMobCoins(receiver, amount);
+            CoinManager.removeMobCoins(sender, amount);
+
+            if(silent == false) {
+
+                String mobCoinsReceived = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_paid_received")
+                        .replace("{amount}", amountString).replace("{player}", sender.getName()));
+                receiver.sendMessage(mobCoinsReceived);
+
+                String mobCoinsSent = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_paid")
+                        .replace("{player}", receiverName).replace("{amount}", amountString));
+                sender.sendMessage(mobCoinsSent);
+
+            }
 
         }
 

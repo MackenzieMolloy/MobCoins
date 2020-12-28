@@ -4,6 +4,10 @@ options:
   # Should players be able to have a negative amount of mobcoins
   #
   negative_balance: false
+  #
+  # Should players be able to send money to themselves
+  #
+  can_pay_self: false
   hooks:
     #
     # Allows you to use the "CUSTOM" currency in ShopGUIPlus for mobcoins
@@ -37,6 +41,7 @@ messages:
     - "&7 &7"
     - "&e/mobcoin balance ● &7Shows how many mobcoins you have"
     - "&e/mobcoin baltop ● &7Shows everyone's balance in order"
+    - "&e/mobcoin pay (player) (amount) ● &7Sends money to players"
     - "&7 &7"
   help_staff:
     - "&7 &7"
@@ -45,6 +50,7 @@ messages:
     - "&7Mobcoins are a currency obtained by killing mobs, which can be used to purchase goods."
     - "&7 &7"
     - "&e/mobcoin balance (player) ● &7Shows how many mobcoins you have"
+    - "&e/mobcoin pay (player) (amount) ● &7Sends money to players"
     - "&e/mobcoin baltop ● &7Shows everyone's balance in order"
     - "&e/mobcoin add (player) (amount) ● &7Adds mobcoins to a player's balance"
     - "&e/mobcoin set (player) (amount) ● &7Sets a player's balance"
@@ -52,12 +58,18 @@ messages:
     - "&c/mobcoin reload ● &7Reloads plugin configuration"
     - "&7 &7"
   balance: "&e&lMobCoins ● &fYou have &e{balance} Mobcoins&f."
+  insufficient_funds: "&cYou do not have enough mobcoins."
+  balance_pay_usage: "&cIncorrect usage; &7/mobcoin pay (player) (amount)"
+  balance_pay_self: "&cYou cannot pay yourself."
+  balance_pay_nothing: "&cYou can't pay people 0 Mobcoins."
+  balance_pay_paid: "&e&lMobCoins ● &fYou have paid &e{amount} Mobcoins&f to &e{player}&f."
+  balance_pay_paid_received: "&e&lMobCoins ● &fYou have received &e{amount} Mobcoins&f from &e{player}&f."
   balance_other_usage: "&cIncorrect usage; &7/mobcoin balance (player)"
   balance_other: "&e&lMobCoins ● &e{player} &fhas &e{balance} Mobcoins&f."
   balance_add_usage: "&cIncorrect usage; &7/mobcoin add (player) (amount)"
   balance_add_added: "&c&lMobCoins ● &7Added &c{amount} MobCoins&7 to &c{player}'s&7 balance."
   balance_set_usage: "&cIncorrect usage; &7/mobcoin set (player) (amount)"
-  balance_set_setted: "&c&lMobCoins ● &7Set &c{player}'s &7balance to &c{amount}&7." #I know "setted" isn't a word, but I didn't want to call it "balance_set_set"
+  balance_set_setted: "&c&lMobCoins ● &7Set &c{player}'s &7balance to &c{amount}&7."
   balance_remove_usage: "&cIncorrect usage; &7/mobcoin remove (player) (amount)"
   balance_remove_removed: "&c&lMobCoins ● &7Remove &c{amount} Mobcoins&7 from &c{player}'s&7 balance."
   balance_top_list:

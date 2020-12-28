@@ -129,6 +129,33 @@ public class Commands implements CommandExecutor {
                 }
             }
 
+            else if(args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
+
+                if(sender.hasPermission("mobcoins.command.pay")) {
+
+                    if (args.length >= 3) {
+
+                        CoinManager.transferMobCoins(sender, args[1], args[2], false);
+
+                    }
+
+                    else {
+
+                        String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_usage"));
+                        sender.sendMessage(incorrectUsage);
+
+                    }
+                }
+
+                else {
+
+                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
+                    sender.sendMessage(noPermission);
+
+                }
+
+            }
+
             else if(args[0].equalsIgnoreCase("add")) {
 
                 if(sender.hasPermission("mobcoins.admin.add")) {
@@ -207,7 +234,7 @@ public class Commands implements CommandExecutor {
                         else {
 
                             Player addTo = Bukkit.getPlayerExact(args[1]);
-                            CoinManager.setMobCoins(addTo, Double.valueOf(args[2]));
+                            CoinManager.setMobCoins(addTo, Double.valueOf(args[2]), false);
 
                             String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
                                     .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
@@ -311,7 +338,7 @@ public class Commands implements CommandExecutor {
 
             }
 
-            else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")) {
+            else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop") || args[0].equalsIgnoreCase("top")) {
 
                 if(sender.hasPermission("mobcoins.command.baltop")) {
                     if (args.length >= 2) {
@@ -469,7 +496,7 @@ public class Commands implements CommandExecutor {
                     else {
 
                         Player addTo = Bukkit.getPlayerExact(args[1]);
-                        CoinManager.setMobCoins(addTo, Double.valueOf(args[2]));
+                        CoinManager.setMobCoins(addTo, Double.valueOf(args[2]), false);
 
                         String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
                                 .replace("{player}", addTo.getName()).replace("{amount}", args[2]));

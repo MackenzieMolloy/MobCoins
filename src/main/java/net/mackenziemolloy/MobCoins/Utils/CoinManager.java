@@ -24,7 +24,17 @@ public class CoinManager {
 
         if(mobCoins.dataFile.get(player.getUniqueId().toString()) != null) {
 
-            mobCoins.dataFile.set(player.getUniqueId().toString(), mobCoins.dataFile.getDouble(player.getUniqueId().toString()) - amount);
+            if(mobCoins.dataFile.getDouble(player.getUniqueId().toString()) >= amount || mobCoins.configFile.getBoolean("options.negative_balance")) {
+
+                mobCoins.dataFile.set(player.getUniqueId().toString(), mobCoins.dataFile.getDouble(player.getUniqueId().toString()) - amount);
+
+            }
+
+            else {
+
+                mobCoins.dataFile.set(player.getUniqueId().toString(), 0.0);
+
+            }
 
         }
 
@@ -63,8 +73,18 @@ public class CoinManager {
 
         MobCoins mobCoins = MobCoins.getInstance();
 
-        mobCoins.dataFile.set(player.getUniqueId().toString(), amount);
-        mobCoins.saveFiles(false, true);
+        if(mobCoins.configFile.getBoolean("options.negative_balance")) {
+
+            mobCoins.dataFile.set(player.getUniqueId().toString(), amount);
+            mobCoins.saveFiles(false, true);
+        }
+
+        else {
+
+            mobCoins.dataFile.set(player.getUniqueId().toString(), Math.abs(amount));
+            mobCoins.saveFiles(false, true);
+
+        }
 
     }
 
@@ -84,6 +104,8 @@ public class CoinManager {
     }
 
     public static String getBalanceTop(Integer page) {
+
+        if(page < 1) page = 1;
 
         MobCoins mobCoins = MobCoins.getInstance();
         int amountPerPage = mobCoins.configFile.getInt("options.balancetop_amount_per_page");

@@ -74,7 +74,7 @@ public class Commands implements CommandExecutor {
 
             else if(args[0].equalsIgnoreCase("balance") || args[0].equalsIgnoreCase("bal")) {
 
-                if(sender.hasPermission("mobcoins.commands.balance")) {
+                if(sender.hasPermission("mobcoins.command.balance")) {
 
                     if (sender.hasPermission("mobcoins.admin.balance")) {
 

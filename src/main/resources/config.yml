@@ -1,5 +1,9 @@
 options:
   balancetop_amount_per_page: 10
+  #
+  # Should players be able to have a negative amount of mobcoins
+  #
+  negative_balance: false
   hooks:
     #
     # Allows you to use the "CUSTOM" currency in ShopGUIPlus for mobcoins

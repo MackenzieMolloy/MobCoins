@@ -111,7 +111,7 @@ public class CoinManager {
 
         }
 
-        else if (!amountString.matches("\\d+")) {
+        else if (!NumberUtils.isNumber(amountString)) {
 
             if(silent == false) {
                 String notANumber = ChatColor.translateAlternateColorCodes('&',
@@ -151,11 +151,11 @@ public class CoinManager {
             if(silent == false) {
 
                 String mobCoinsReceived = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_paid_received")
-                        .replace("{amount}", amountString).replace("{player}", sender.getName()));
+                        .replace("{amount}", String.valueOf(amount)).replace("{player}", sender.getName()));
                 receiver.sendMessage(mobCoinsReceived);
 
                 String mobCoinsSent = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_paid")
-                        .replace("{player}", receiverName).replace("{amount}", amountString));
+                        .replace("{player}", receiverName).replace("{amount}", String.valueOf(amount)));
                 sender.sendMessage(mobCoinsSent);
 
             }

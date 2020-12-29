@@ -120,7 +120,7 @@ public class CoinManager {
             }
         }
 
-        else if(Double.valueOf(amountString) <= mobCoins.configFile.getDouble("options.minimum_pay_amount")) {
+        else if(Double.valueOf(amountString) < mobCoins.configFile.getDouble("options.minimum_pay_amount")) {
 
             if(silent == false) {
 

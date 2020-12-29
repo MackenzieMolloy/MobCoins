@@ -52,6 +52,22 @@ public class PlaceHolders extends PlaceholderExpansion implements Listener  {
 
         }
 
+        else if(params.equalsIgnoreCase("balance_rounded")) {
+
+            if(mobCoins.dataFile.get(player.getUniqueId().toString()) != null) {
+
+                return Generic.roundedNumber(mobCoins.dataFile.getDouble(player.getUniqueId().toString()));
+
+            }
+
+            else {
+
+                return "0.0";
+
+            }
+
+        }
+
         else {
 
             return "Not a valid placeholder";

@@ -26,8 +26,6 @@ dependencies {
 
 
 shadowJar {
-    //relocate "me.mattstudios.mfgui", "net.mackenziemolloy.SGPSellGUI"
-    //relocate "org.bstats.bukkit", "net.mackenziemolloy.SGPSellGUI"
     minimize()
 
 }

@@ -1,4 +1,7 @@
 options:
+  #
+  # How many players should be shown per-page?
+  #
   balancetop_amount_per_page: 10
   #
   # Should players be able to have a negative amount of mobcoins
@@ -12,11 +15,15 @@ options:
   # What's the least amount of money someone can pay
   #
   minimum_pay_amount: 0.01
-  hooks:
+  hooks: #( REQUIRES RESTART TO FULLY APPLY CHANGES - HOOKS)
     #
     # Allows you to use the "CUSTOM" currency in ShopGUIPlus for mobcoins
     #
-    shopguiplus: true
+    shopguiplus: false
+    #
+    # Allows you to use the placeholders using PlaceHolderAPI (IE: "%mobcoins_balance%)
+    #
+    placeholderapi: false
   #
   # When enabled, it tells you the mob type you just killed,
   # useful when adding mob coin values to the config

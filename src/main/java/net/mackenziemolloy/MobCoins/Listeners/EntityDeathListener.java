@@ -1,4 +1,4 @@
-package net.mackenziemolloy.MobCoins.Events;
+package net.mackenziemolloy.MobCoins.Listeners;
 
 import net.mackenziemolloy.MobCoins.MobCoins;
 import net.mackenziemolloy.MobCoins.Utils.CoinManager;
@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class MobDeathEvent implements Listener {
+public class EntityDeathListener implements Listener {
 
     private final MobCoins mobCoins;
 
-    public MobDeathEvent(final MobCoins mobCoins) {
+    public EntityDeathListener(final MobCoins mobCoins) {
         this.mobCoins = mobCoins;
 
     }

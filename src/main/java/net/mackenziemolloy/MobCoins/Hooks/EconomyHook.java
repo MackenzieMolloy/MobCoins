@@ -1,8 +1,9 @@
-package net.mackenziemolloy.MobCoins.Utils;
+package net.mackenziemolloy.MobCoins.Hooks;
 
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import net.brcdev.shopgui.provider.economy.EconomyProvider;
 import net.mackenziemolloy.MobCoins.MobCoins;
+import net.mackenziemolloy.MobCoins.Utils.CoinManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

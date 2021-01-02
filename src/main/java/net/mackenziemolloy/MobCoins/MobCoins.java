@@ -1,10 +1,13 @@
+//
+// MobCoins (Built against 1.8)
+//   By: Mackenzie Molloy
+//
 package net.mackenziemolloy.MobCoins;
 
-import net.mackenziemolloy.MobCoins.Events.MobDeathEvent;
+import net.mackenziemolloy.MobCoins.Listeners.EntityDeathListener;
 import net.mackenziemolloy.MobCoins.Utils.CommentedConfiguration;
-import net.mackenziemolloy.MobCoins.Utils.EconomyHook;
-import net.mackenziemolloy.MobCoins.Utils.PlaceHolders;
-import net.mackenziemolloy.MobCoins.Utils.ShopGUIPlusHook;
+import net.mackenziemolloy.MobCoins.Hooks.PlaceHolderAPIHook;
+import net.mackenziemolloy.MobCoins.Hooks.ShopGUIPlusHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -12,40 +15,71 @@ import java.io.IOException;
 
 public class MobCoins extends JavaPlugin {
 
+    // Configuration File
     public CommentedConfiguration configFile;
+    // Data Storage File
     public CommentedConfiguration dataFile;
+    // Plugin Instance Provider
     public static MobCoins mobCoins;
 
     @Override
     public void onEnable() {
 
+        // Plugin Instance Setter
         mobCoins = this;
 
+        // Command Initializer
         new Commands(this);
-        getServer().getPluginManager().registerEvents(new MobDeathEvent(this), this);
+
+        // Entity Death Listener Initializer
+        getServer().getPluginManager().registerEvents(new EntityDeathListener(this), this);
+
+        // Plugin Files Initializer
         generateFiles();
 
+        //
+        // Plugin Hook Initializers :-
+        //
+
+        // ShopGUIPlus (Custom Economy Hook)
+        // Checks if ShopGUIPlus is running
         if(getServer().getPluginManager().isPluginEnabled("ShopGUIPlus")) {
+            // Hooks only if the config option is enabled
             if(configFile.getBoolean("options.hooks.shopguiplus")) {
+                // ShopGUIPlus Hook Initializer
                 new ShopGUIPlusHook();
             }
         }
 
+        // PlaceHolderAPI (PlaceHolders - EI: "%mobcoins_balance%)
+        // Checks if PlaceHolderAPI is running
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceHolders(this).register();
+            // Hooks only if the config option is enabled
+            if(configFile.getBoolean("options.hooks.placeholderapi")) {
+                // PlaceHolderAPI Hook Initializer
+                new PlaceHolderAPIHook(this).register();
+                MobCoins.getInstance().getLogger().info("Hooked into PlaceHolderAPI!");
+            }
         }
 
     }
 
-
+    // Plugin File Generation Method
     public void generateFiles() {
+
+        // Configuration File
         File config = new File(getDataFolder(), "config.yml");
+        // Data Storage File
         File data = new File(getDataFolder(), "data.yml");
 
+        // Generates the Configuration File if it doesn't already exist
         if(!config.exists()) saveResource("config.yml", false);
+        // Generates the Data Storage File if it doesn't already exist
         if(!data.exists()) saveResource("data.yml", false);
 
+        // Loads the Configuration File into memory
         configFile = CommentedConfiguration.loadConfiguration(config);
+        // Attempts to sync the Configuration File content with what's required by Default
         try {
             configFile.syncWithConfig(config, getResource("config.yml"), "options.mobs"); //decorations
         } catch (IOException e) {
@@ -53,7 +87,9 @@ public class MobCoins extends JavaPlugin {
             e.printStackTrace();
         }
 
+        // Loads the Data Storage File into memory
         dataFile = CommentedConfiguration.loadConfiguration(data);
+        // Attempts to sync the Data Storage File content with what's required by Default
         try {
             dataFile.syncWithConfig(data, getResource("data.yml"), "stupid_option"); //decorations
         } catch (IOException e) {
@@ -62,12 +98,15 @@ public class MobCoins extends JavaPlugin {
         }
     }
 
+    // Provides instance information to the Instance provider
     public static MobCoins getInstance() {
         return mobCoins;
     }
 
+    // Plugin File updating method
     public void saveFiles(boolean config, boolean data) {
 
+        // Copies the in-memory Configuration, to the saved Configuration file
         if(config) {
             try {
                 configFile.save(new File(getDataFolder(), "config.yml"));
@@ -77,6 +116,7 @@ public class MobCoins extends JavaPlugin {
             }
         }
 
+        // Copies the in-memory Data Storage, to the saved Data Storage file
         if(data) {
             try {
                 dataFile.save(new File(getDataFolder(), "data.yml"));

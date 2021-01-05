@@ -215,32 +215,7 @@ public class Commands implements CommandExecutor {
 
                     if(args.length >= 3) {
 
-                        if(Bukkit.getPlayerExact(args[1]) == null) {
-
-                            String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                    .replace("{player}", args[1]));
-                            sender.sendMessage(playerNotFound);
-
-                        }
-
-                        else if(!NumberUtils.isNumber(args[2])) {
-
-                            String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                    .replace("{number}", args[2]));
-                            sender.sendMessage(notANumber);
-
-                        }
-
-                        else {
-
-                            Player addTo = Bukkit.getPlayerExact(args[1]);
-                            CoinManager.setMobCoins(addTo, Double.valueOf(args[2]), false);
-
-                            String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
-                                    .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                            sender.sendMessage(setMobCoins);
-
-                        }
+                        CoinManager.setMobCoins(sender, args[1], args[2], false);
 
                     }
 
@@ -477,32 +452,7 @@ public class Commands implements CommandExecutor {
 
                 if(args.length >= 3) {
 
-                    if(Bukkit.getPlayerExact(args[1]) == null) {
-
-                        String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                .replace("{player}", args[1]));
-                        console.sendMessage(playerNotFound);
-
-                    }
-
-                    else if(!NumberUtils.isNumber(args[2])) {
-
-                        String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                .replace("{number}", args[2]));
-                        console.sendMessage(notANumber);
-
-                    }
-
-                    else {
-
-                        Player addTo = Bukkit.getPlayerExact(args[1]);
-                        CoinManager.setMobCoins(addTo, Double.valueOf(args[2]), false);
-
-                        String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
-                                .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                        console.sendMessage(setMobCoins);
-
-                    }
+                    CoinManager.setMobCoins(console, args[1], args[2], false);
 
                 }
 

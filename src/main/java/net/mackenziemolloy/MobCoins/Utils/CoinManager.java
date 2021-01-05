@@ -4,6 +4,7 @@ import net.mackenziemolloy.MobCoins.MobCoins;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -69,20 +70,93 @@ public class CoinManager {
 
     }
 
-    public static void setMobCoins(Player player, Double amount, Boolean silent) {
+    public static void setMobCoins(Player setter, String receiverName, String amountString, Boolean silent) {
 
         MobCoins mobCoins = MobCoins.getInstance();
 
-        if(mobCoins.configFile.getBoolean("options.negative_balance")) {
+        if(Bukkit.getPlayerExact(receiverName) == null) {
 
-            mobCoins.dataFile.set(player.getUniqueId().toString(), amount);
-            mobCoins.saveFiles(false, true);
+            String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
+                    .replace("{player}", receiverName));
+            setter.sendMessage(playerNotFound);
+
+        }
+
+        else if(!NumberUtils.isNumber(amountString)) {
+
+            String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
+                    .replace("{number}", amountString));
+            setter.sendMessage(notANumber);
+
         }
 
         else {
 
-            mobCoins.dataFile.set(player.getUniqueId().toString(), Math.abs(amount));
-            mobCoins.saveFiles(false, true);
+            Player addTo = Bukkit.getPlayerExact(receiverName);
+            Double amountToAdd = Double.valueOf(amountString);
+
+            if(mobCoins.configFile.getBoolean("options.negative_balance")) {
+
+                mobCoins.dataFile.set(addTo.getUniqueId().toString(), amountToAdd);
+                mobCoins.saveFiles(false, true);
+            }
+
+            else {
+
+                mobCoins.dataFile.set(addTo.getUniqueId().toString(), Math.abs(amountToAdd));
+                mobCoins.saveFiles(false, true);
+
+            }
+
+            String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
+                    .replace("{player}", addTo.getName()).replace("{amount}", amountString));
+            setter.sendMessage(setMobCoins);
+
+        }
+
+    }
+
+    public static void setMobCoins(ConsoleCommandSender setter, String receiverName, String amountString, Boolean silent) {
+
+        MobCoins mobCoins = MobCoins.getInstance();
+
+        if(Bukkit.getPlayerExact(receiverName) == null) {
+
+            String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
+                    .replace("{player}", receiverName));
+            setter.sendMessage(playerNotFound);
+
+        }
+
+        else if(!NumberUtils.isNumber(amountString)) {
+
+            String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
+                    .replace("{number}", amountString));
+            setter.sendMessage(notANumber);
+
+        }
+
+        else {
+
+            Player addTo = Bukkit.getPlayerExact(receiverName);
+            Double amountToAdd = Double.valueOf(amountString);
+
+            if(mobCoins.configFile.getBoolean("options.negative_balance")) {
+
+                mobCoins.dataFile.set(addTo.getUniqueId().toString(), amountToAdd);
+                mobCoins.saveFiles(false, true);
+            }
+
+            else {
+
+                mobCoins.dataFile.set(addTo.getUniqueId().toString(), Math.abs(amountToAdd));
+                mobCoins.saveFiles(false, true);
+
+            }
+
+            String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_setted")
+                    .replace("{player}", addTo.getName()).replace("{amount}", amountString));
+            setter.sendMessage(setMobCoins);
 
         }
 

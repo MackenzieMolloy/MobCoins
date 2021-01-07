@@ -4,10 +4,13 @@
 //
 package net.mackenziemolloy.MobCoins;
 
+import net.mackenziemolloy.MobCoins.Hooks.PluginAPI;
 import net.mackenziemolloy.MobCoins.Listeners.EntityDeathListener;
 import net.mackenziemolloy.MobCoins.Utils.CommentedConfiguration;
 import net.mackenziemolloy.MobCoins.Hooks.PlaceHolderAPIHook;
 import net.mackenziemolloy.MobCoins.Hooks.ShopGUIPlusHook;
+import org.bukkit.plugin.PluginLoader;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -36,6 +39,9 @@ public class MobCoins extends JavaPlugin {
 
         // Plugin Files Initializer
         generateFiles();
+
+        // Plugin API Register
+        getServer().getServicesManager().register(PluginAPI.class, new PluginAPI(), this, ServicePriority.Highest);
 
         //
         // Plugin Hook Initializers :-

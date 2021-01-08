@@ -11,546 +11,568 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import net.mackenziemolloy.mobcoins.utils.CoinManager;
+import net.mackenziemolloy.mobcoins.api.MobCoin;
 
 public class Commands implements CommandExecutor {
 
-    private final MobCoins mobCoins;
+	private final MobCoins mobCoins;
+	private final MobCoin mobCoin;
 
-    public Commands(final MobCoins mobCoins) {
-        this.mobCoins = mobCoins;
+	public Commands(final MobCoins mobCoins) {
+		this.mobCoins = mobCoins;
+		this.mobCoin = mobCoins.getMobCoin();
+		mobCoins.getCommand("mobcoins").setExecutor(this);
+	}
 
-        mobCoins.getCommand("mobcoins").setExecutor(this);
-    }
+	@Override
+	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+		if (commandSender instanceof Player) {
 
-        if(commandSender instanceof Player) {
+			Player sender = (Player) commandSender;
 
-            Player sender = (Player) commandSender;
+			if (args.length <= 0) {
 
-            if(args.length <= 0) {
+				if (sender.hasPermission("mobcoins.help.staff")) {
 
-                if (sender.hasPermission("mobcoins.help.staff")) {
+					StringBuilder helpStaffMessage = new StringBuilder();
 
-                    StringBuilder helpStaffMessage = new StringBuilder();
+					for (String item : mobCoins.configFile.getStringList("messages.help_staff")) {
 
+						String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
+						helpStaffMessage.append(messageToAdd).append("\n");
 
-                    for(String item : mobCoins.configFile.getStringList("messages.help_staff")) {
+					}
 
-                        String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
-                        helpStaffMessage.append(messageToAdd).append("\n");
+					sender.sendMessage(helpStaffMessage.toString());
 
-                    }
+				}
 
-                    sender.sendMessage(helpStaffMessage.toString());
+				else if (sender.hasPermission("mobcoins.help")) {
 
-                }
+					StringBuilder helpMessage = new StringBuilder();
 
-                else if(sender.hasPermission("mobcoins.help")) {
+					for (String item : mobCoins.configFile.getStringList("messages.help")) {
 
-                    StringBuilder helpMessage = new StringBuilder();
+						String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
+						helpMessage.append(messageToAdd).append("\n");
 
+					}
 
-                    for(String item : mobCoins.configFile.getStringList("messages.help")) {
+					sender.sendMessage(helpMessage.toString());
 
-                        String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
-                        helpMessage.append(messageToAdd).append("\n");
+				}
 
-                    }
+				else {
 
-                    sender.sendMessage(helpMessage.toString());
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                }
+				}
 
-                else {
+			}
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+			else if (args[0].equalsIgnoreCase("balance") || args[0].equalsIgnoreCase("bal")) {
 
-                }
+				if (sender.hasPermission("mobcoins.command.balance")) {
 
-            }
+					if (sender.hasPermission("mobcoins.admin.balance")) {
 
-            else if(args[0].equalsIgnoreCase("balance") || args[0].equalsIgnoreCase("bal")) {
+						if (args.length >= 2) {
 
-                if(sender.hasPermission("mobcoins.command.balance")) {
+							if (Bukkit.getPlayerExact(args[1]) != null) {
 
-                    if (sender.hasPermission("mobcoins.admin.balance")) {
+								Player selected = Bukkit.getPlayerExact(args[1]);
+								String selectedBalance = String.valueOf(this.mobCoin.getBalance(selected));
 
-                        if (args.length >= 2) {
+								String balanceOther = ChatColor.translateAlternateColorCodes('&',
+										mobCoins.configFile.getString("messages.balance_other")
+												.replace("{player}", selected.getName())
+												.replace("{balance}", selectedBalance));
+								sender.sendMessage(balanceOther);
 
-                            if(Bukkit.getPlayerExact(args[1]) != null) {
+							}
 
-                                Player selected = Bukkit.getPlayerExact(args[1]);
-                                String selectedBalance = String.valueOf(CoinManager.getBalance(selected));
+							else {
 
-                                String balanceOther = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_other")
-                                        .replace("{player}", selected.getName()).replace("{balance}", selectedBalance));
-                                sender.sendMessage(balanceOther);
+								String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+										.getString("messages.player_not_found").replace("{player}", args[1]));
+								sender.sendMessage(playerNotFound);
 
-                            }
+							}
 
-                            else {
+						}
 
-                                String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                        .replace("{player}", args[1]));
-                                sender.sendMessage(playerNotFound);
+						else {
 
-                            }
+							String balance = String.valueOf(this.mobCoin.getBalance(sender));
 
-                        }
+							String balanceMessage = ChatColor.translateAlternateColorCodes('&',
+									mobCoins.configFile.getString("messages.balance").replace("{balance}", balance));
+							sender.sendMessage(balanceMessage);
+						}
 
-                        else {
+					}
 
-                            String balance = String.valueOf(CoinManager.getBalance(sender));
+					else {
 
-                            String balanceMessage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance").replace("{balance}", balance));
-                            sender.sendMessage(balanceMessage);
-                        }
+						String balance = String.valueOf(this.mobCoin.getBalance(sender));
 
-                    }
+						String balanceMessage = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance").replace("{balance}", balance));
+						sender.sendMessage(balanceMessage);
+					}
 
-                    else {
+				}
 
-                        String balance = String.valueOf(CoinManager.getBalance(sender));
+				else {
 
-                        String balanceMessage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance").replace("{balance}", balance));
-                        sender.sendMessage(balanceMessage);
-                    }
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                }
+				}
+			}
 
-                else {
+			else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+				if (sender.hasPermission("mobcoins.command.pay")) {
 
-                }
-            }
+					if (args.length >= 3) {
 
-            else if(args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
+						this.mobCoin.transferMobCoins(sender, args[1], args[2], false);
 
-                if(sender.hasPermission("mobcoins.command.pay")) {
+					}
 
-                    if (args.length >= 3) {
+					else {
 
-                        CoinManager.transferMobCoins(sender, args[1], args[2], false);
+						String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_pay_usage"));
+						sender.sendMessage(incorrectUsage);
 
-                    }
+					}
+				}
 
-                    else {
+				else {
 
-                        String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_pay_usage"));
-                        sender.sendMessage(incorrectUsage);
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                    }
-                }
+				}
 
-                else {
+			}
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+			else if (args[0].equalsIgnoreCase("add")) {
 
-                }
+				if (sender.hasPermission("mobcoins.admin.add")) {
 
-            }
+					if (args.length >= 3) {
 
-            else if(args[0].equalsIgnoreCase("add")) {
+						if (Bukkit.getPlayerExact(args[1]) == null) {
 
-                if(sender.hasPermission("mobcoins.admin.add")) {
+							String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+									.getString("messages.player_not_found").replace("{player}", args[1]));
+							sender.sendMessage(playerNotFound);
 
-                    if(args.length >= 3) {
+						}
 
-                        if(Bukkit.getPlayerExact(args[1]) == null) {
+						else if (!NumberUtils.isNumber(args[2])) {
 
-                            String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                    .replace("{player}", args[1]));
-                            sender.sendMessage(playerNotFound);
+							String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+									.getString("messages.not_a_number").replace("{number}", args[2]));
+							sender.sendMessage(notANumber);
 
-                        }
+						}
 
-                        else if(!NumberUtils.isNumber(args[2])) {
+						else {
 
-                            String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                    .replace("{number}", args[2]));
-                            sender.sendMessage(notANumber);
+							Player addTo = Bukkit.getPlayerExact(args[1]);
+							this.mobCoin.addMobCoins(addTo, Double.valueOf(args[2]));
 
-                        }
+							String addedMobCoins = ChatColor.translateAlternateColorCodes('&',
+									mobCoins.configFile.getString("messages.balance_add_added")
+											.replace("{player}", addTo.getName()).replace("{amount}", args[2]));
+							sender.sendMessage(addedMobCoins);
 
-                        else {
+						}
 
-                            Player addTo = Bukkit.getPlayerExact(args[1]);
-                            CoinManager.addMobCoins(addTo, Double.valueOf(args[2]));
+					}
 
-                            String addedMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_add_added")
-                                    .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                            sender.sendMessage(addedMobCoins);
+					else {
 
-                        }
+						String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_add_usage"));
+						sender.sendMessage(incorrectUsage);
 
-                    }
+					}
 
-                    else {
+				}
 
-                        String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_add_usage"));
-                        sender.sendMessage(incorrectUsage);
+				else {
 
-                    }
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                }
+				}
 
-                else {
+			}
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+			else if (args[0].equalsIgnoreCase("set")) {
 
-                }
+				if (sender.hasPermission("mobcoins.admin.set")) {
 
-            }
+					if (args.length >= 3) {
 
-            else if(args[0].equalsIgnoreCase("set")) {
+						this.mobCoin.setMobCoins(sender, args[1], args[2], false);
 
-                if(sender.hasPermission("mobcoins.admin.set")) {
+					}
 
-                    if(args.length >= 3) {
+					else {
 
-                        CoinManager.setMobCoins(sender, args[1], args[2], false);
+						String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_set_usage"));
+						sender.sendMessage(incorrectUsage);
 
-                    }
+					}
 
-                    else {
+				}
 
-                        String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_usage"));
-                        sender.sendMessage(incorrectUsage);
+				else {
 
-                    }
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
+				}
 
-                }
+			}
 
-                else {
+			else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("rm")
+					|| args[0].equalsIgnoreCase("rem")) {
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+				if (sender.hasPermission("mobcoins.admin.remove")) {
 
-                }
+					if (args.length >= 3) {
 
-            }
+						if (Bukkit.getPlayerExact(args[1]) == null) {
 
+							String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+									.getString("messages.player_not_found").replace("{player}", args[1]));
+							sender.sendMessage(playerNotFound);
 
-            else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("rm") || args[0].equalsIgnoreCase("rem")) {
+						} else if (!NumberUtils.isNumber(args[2])) {
 
-                if(sender.hasPermission("mobcoins.admin.remove")) {
+							String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+									.getString("messages.not_a_number").replace("{number}", args[2]));
+							sender.sendMessage(notANumber);
 
-                    if (args.length >= 3) {
+						} else {
 
-                        if (Bukkit.getPlayerExact(args[1]) == null) {
+							Player addTo = Bukkit.getPlayerExact(args[1]);
+							this.mobCoin.removeMobCoins(addTo, Double.valueOf(args[2]));
 
-                            String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                    .replace("{player}", args[1]));
-                            sender.sendMessage(playerNotFound);
+							String setMobCoins = ChatColor.translateAlternateColorCodes('&',
+									mobCoins.configFile.getString("messages.balance_remove_removed")
+											.replace("{player}", addTo.getName()).replace("{amount}", args[2]));
+							sender.sendMessage(setMobCoins);
 
-                        } else if (!NumberUtils.isNumber(args[2])) {
+						}
 
-                            String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                    .replace("{number}", args[2]));
-                            sender.sendMessage(notANumber);
+					} else {
 
-                        } else {
+						String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_remove_usage"));
+						sender.sendMessage(incorrectUsage);
 
-                            Player addTo = Bukkit.getPlayerExact(args[1]);
-                            CoinManager.removeMobCoins(addTo, Double.valueOf(args[2]));
+					}
 
-                            String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_remove_removed")
-                                    .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                            sender.sendMessage(setMobCoins);
+				}
 
-                        }
+				else {
 
-                    } else {
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                        String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_remove_usage"));
-                        sender.sendMessage(incorrectUsage);
+				}
 
-                    }
+			}
 
-                }
+			else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
 
-                else {
+				if (sender.hasPermission("mobcoins.admin.reload")) {
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+					CompletableFuture<Void> future = CompletableFuture.runAsync(mobCoins::generateFiles);
+					future.whenComplete((success, error) -> {
+						if (error != null) {
+							sender.sendMessage("An error occurred, check the console!");
+							error.printStackTrace();
+						} else {
+							String configReloadedMsg = ChatColor.translateAlternateColorCodes('&',
+									mobCoins.configFile.getString("messages.reloaded_config"));
+							sender.sendMessage(configReloadedMsg);
+						}
+					});
 
-                }
+				}
 
-            }
+				else {
 
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-            else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
+				}
 
-                if(sender.hasPermission("mobcoins.admin.reload")) {
+			}
 
-                    CompletableFuture<Void> future = CompletableFuture.runAsync(mobCoins::generateFiles);
-                    future.whenComplete((success, error) -> {
-                        if(error != null) {
-                            sender.sendMessage("An error occurred, check the console!");
-                            error.printStackTrace();
-                        } else {
-                            String configReloadedMsg = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.reloaded_config"));
-                            sender.sendMessage(configReloadedMsg);
-                        }
-                    });
+			else if (args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")
+					|| args[0].equalsIgnoreCase("top")) {
 
-                }
+				if (sender.hasPermission("mobcoins.command.baltop")) {
+					if (args.length >= 2) {
 
-                else {
+						if (NumberUtils.isNumber(args[1])) {
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+							sender.sendMessage(this.mobCoin.getBalanceTop(Integer.valueOf(args[1])));
 
-                }
+						} else {
 
-            }
+							sender.sendMessage(this.mobCoin.getBalanceTop(1));
 
-            else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop") || args[0].equalsIgnoreCase("top")) {
+						}
 
-                if(sender.hasPermission("mobcoins.command.baltop")) {
-                    if (args.length >= 2) {
+					} else {
+						sender.sendMessage(this.mobCoin.getBalanceTop(1));
+					}
+				}
 
-                        if (NumberUtils.isNumber(args[1])) {
+				else {
 
-                            sender.sendMessage(CoinManager.getBalanceTop(Integer.valueOf(args[1])));
+					String noPermission = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.no_permission"));
+					sender.sendMessage(noPermission);
 
-                        } else {
+				}
 
-                            sender.sendMessage(CoinManager.getBalanceTop(1));
+			}
 
-                        }
+			else {
 
-                    } else {
-                        sender.sendMessage(CoinManager.getBalanceTop(1));
-                    }
-                }
+				String unknownSubCommand = ChatColor.translateAlternateColorCodes('&',
+						mobCoins.configFile.getString("messages.unknown_command"));
+				sender.sendMessage(unknownSubCommand);
 
-                else {
+			}
 
-                    String noPermission = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.no_permission"));
-                    sender.sendMessage(noPermission);
+		}
 
-                }
+		else {
 
-            }
+			ConsoleCommandSender console = mobCoins.getServer().getConsoleSender();
 
-            else {
+			if (args.length <= 0) {
 
-                String unknownSubCommand = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.unknown_command"));
-                sender.sendMessage(unknownSubCommand);
+				StringBuilder helpStaffMessage = new StringBuilder();
 
-            }
+				for (String item : mobCoins.configFile.getStringList("messages.help_staff")) {
 
+					String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
+					helpStaffMessage.append(messageToAdd).append("\n");
 
-        }
+				}
 
-        else {
+				console.sendMessage(helpStaffMessage.toString());
 
-            ConsoleCommandSender console = mobCoins.getServer().getConsoleSender();
+			}
 
-            if(args.length <= 0) {
+			else if (args[0].equalsIgnoreCase("balance")) {
 
-                StringBuilder helpStaffMessage = new StringBuilder();
+				if (args.length >= 2) {
 
+					if (Bukkit.getPlayerExact(args[1]) != null) {
 
-                for(String item : mobCoins.configFile.getStringList("messages.help_staff")) {
+						Player selected = Bukkit.getPlayerExact(args[1]);
+						String selectedBalance = String.valueOf(this.mobCoin.getBalance(selected));
 
-                    String messageToAdd = ChatColor.translateAlternateColorCodes('&', item);
-                    helpStaffMessage.append(messageToAdd).append("\n");
+						String balanceOther = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_other")
+										.replace("{player}", selected.getName()).replace("{balance}", selectedBalance));
+						console.sendMessage(balanceOther);
 
-                }
+					}
 
-                console.sendMessage(helpStaffMessage.toString());
+					else {
 
-            }
+						String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+								.getString("messages.player_not_found").replace("{player}", args[1]));
+						console.sendMessage(playerNotFound);
 
-            else if(args[0].equalsIgnoreCase("balance")) {
+					}
 
-                if (args.length >= 2) {
+				}
 
-                    if(Bukkit.getPlayerExact(args[1]) != null) {
+				else {
 
-                        Player selected = Bukkit.getPlayerExact(args[1]);
-                        String selectedBalance = String.valueOf(CoinManager.getBalance(selected));
+					String balanceUsage = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.balance_other_usage"));
+					console.sendMessage(balanceUsage);
 
-                        String balanceOther = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_other")
-                                .replace("{player}", selected.getName()).replace("{balance}", selectedBalance));
-                        console.sendMessage(balanceOther);
+				}
 
-                    }
+			}
 
-                    else {
+			else if (args[0].equalsIgnoreCase("add")) {
 
-                        String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                .replace("{player}", args[1]));
-                        console.sendMessage(playerNotFound);
+				if (args.length >= 3) {
 
-                    }
+					if (Bukkit.getPlayerExact(args[1]) == null) {
 
-                }
+						String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+								.getString("messages.player_not_found").replace("{player}", args[1]));
+						console.sendMessage(playerNotFound);
 
-                else {
+					}
 
-                     String balanceUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_other_usage"));
-                     console.sendMessage(balanceUsage);
+					else if (!NumberUtils.isNumber(args[2])) {
 
-                }
+						String notANumber = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.not_a_number").replace("{number}", args[2]));
+						console.sendMessage(notANumber);
 
-            }
+					}
 
-            else if(args[0].equalsIgnoreCase("add")) {
+					else {
 
-                if(args.length >= 3) {
+						Player addTo = Bukkit.getPlayerExact(args[1]);
+						this.mobCoin.addMobCoins(addTo, Double.valueOf(args[2]));
 
-                    if(Bukkit.getPlayerExact(args[1]) == null) {
+						String addedMobCoins = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_add_added")
+										.replace("{player}", addTo.getName()).replace("{amount}", args[2]));
+						console.sendMessage(addedMobCoins);
 
-                        String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                .replace("{player}", args[1]));
-                        console.sendMessage(playerNotFound);
+					}
 
-                    }
+				}
 
-                    else if(!NumberUtils.isNumber(args[2])) {
+				else {
 
-                        String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                .replace("{number}", args[2]));
-                        console.sendMessage(notANumber);
+					String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.balance_add_usage"));
+					console.sendMessage(incorrectUsage);
 
-                    }
+				}
 
-                    else {
+			}
 
-                        Player addTo = Bukkit.getPlayerExact(args[1]);
-                        CoinManager.addMobCoins(addTo, Double.valueOf(args[2]));
+			else if (args[0].equalsIgnoreCase("set")) {
 
-                        String addedMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_add_added")
-                                .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                        console.sendMessage(addedMobCoins);
+				if (args.length >= 3) {
 
-                    }
+					this.mobCoin.setMobCoins(console, args[1], args[2], false);
 
-                }
+				}
 
-                else {
+				else {
 
-                    String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_add_usage"));
-                    console.sendMessage(incorrectUsage);
+					String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.balance_set_usage"));
+					console.sendMessage(incorrectUsage);
 
-                }
+				}
 
-            }
+			}
 
-            else if(args[0].equalsIgnoreCase("set")) {
+			else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("rm")
+					|| args[0].equalsIgnoreCase("rem")) {
 
-                if(args.length >= 3) {
+				if (args.length >= 3) {
 
-                    CoinManager.setMobCoins(console, args[1], args[2], false);
+					if (Bukkit.getPlayerExact(args[1]) == null) {
 
-                }
+						String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile
+								.getString("messages.player_not_found").replace("{player}", args[1]));
+						console.sendMessage(playerNotFound);
 
-                else {
+					} else if (!NumberUtils.isNumber(args[2])) {
 
-                    String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_set_usage"));
-                    console.sendMessage(incorrectUsage);
+						String notANumber = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.not_a_number").replace("{number}", args[2]));
+						console.sendMessage(notANumber);
 
-                }
+					} else {
 
-            }
+						Player addTo = Bukkit.getPlayerExact(args[1]);
+						this.mobCoin.removeMobCoins(addTo, Double.valueOf(args[2]));
 
+						String setMobCoins = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.balance_remove_removed")
+										.replace("{player}", addTo.getName()).replace("{amount}", args[2]));
+						console.sendMessage(setMobCoins);
 
-            else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("rm") || args[0].equalsIgnoreCase("rem")) {
+					}
 
-                if (args.length >= 3) {
+				} else {
 
-                    if (Bukkit.getPlayerExact(args[1]) == null) {
+					String incorrectUsage = ChatColor.translateAlternateColorCodes('&',
+							mobCoins.configFile.getString("messages.balance_remove_usage"));
+					console.sendMessage(incorrectUsage);
 
-                        String playerNotFound = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.player_not_found")
-                                .replace("{player}", args[1]));
-                        console.sendMessage(playerNotFound);
+				}
 
-                    } else if (!NumberUtils.isNumber(args[2])) {
+			}
 
-                        String notANumber = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.not_a_number")
-                                .replace("{number}", args[2]));
-                        console.sendMessage(notANumber);
+			else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
 
-                    } else {
+				CompletableFuture<Void> future = CompletableFuture.runAsync(mobCoins::generateFiles);
+				future.whenComplete((success, error) -> {
+					if (error != null) {
+						console.sendMessage("An error occurred, check the console!");
+						error.printStackTrace();
+					} else {
+						String configReloadedMsg = ChatColor.translateAlternateColorCodes('&',
+								mobCoins.configFile.getString("messages.reloaded_config"));
+						console.sendMessage(configReloadedMsg);
+					}
+				});
 
-                        Player addTo = Bukkit.getPlayerExact(args[1]);
-                        CoinManager.removeMobCoins(addTo, Double.valueOf(args[2]));
+			}
 
-                        String setMobCoins = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_remove_removed")
-                                .replace("{player}", addTo.getName()).replace("{amount}", args[2]));
-                        console.sendMessage(setMobCoins);
+			else if (args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")) {
 
-                    }
+				if (args.length >= 2) {
 
-                } else {
+					if (NumberUtils.isNumber(args[1])) {
 
-                    String incorrectUsage = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.balance_remove_usage"));
-                    console.sendMessage(incorrectUsage);
+						console.sendMessage(this.mobCoin.getBalanceTop(Integer.valueOf(args[1])));
 
-                }
+					} else {
 
-            }
+						console.sendMessage(this.mobCoin.getBalanceTop(1));
 
+					}
 
-            else if(args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
+				} else {
+					console.sendMessage(this.mobCoin.getBalanceTop(1));
+				}
 
+			}
 
-                CompletableFuture<Void> future = CompletableFuture.runAsync(mobCoins::generateFiles);
-                future.whenComplete((success, error) -> {
-                    if(error != null) {
-                        console.sendMessage("An error occurred, check the console!");
-                        error.printStackTrace();
-                    } else {
-                        String configReloadedMsg = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.reloaded_config"));
-                        console.sendMessage(configReloadedMsg);
-                    }
-                });
+			else {
 
-            }
+				String unknownSubCommand = ChatColor.translateAlternateColorCodes('&',
+						mobCoins.configFile.getString("messages.unknown_command"));
+				console.sendMessage(unknownSubCommand);
 
-            else if(args[0].equalsIgnoreCase("balancetop") || args[0].equalsIgnoreCase("baltop")) {
+			}
 
-                if (args.length >= 2) {
+		}
 
-                    if (NumberUtils.isNumber(args[1])) {
+		return false;
 
-                        console.sendMessage(CoinManager.getBalanceTop(Integer.valueOf(args[1])));
-
-                    } else {
-
-                        console.sendMessage(CoinManager.getBalanceTop(1));
-
-                    }
-
-                } else {
-                    console.sendMessage(CoinManager.getBalanceTop(1));
-                }
-
-            }
-
-            else {
-
-                String unknownSubCommand = ChatColor.translateAlternateColorCodes('&', mobCoins.configFile.getString("messages.unknown_command"));
-                console.sendMessage(unknownSubCommand);
-
-            }
-
-
-        }
-
-        return false;
-
-    }
+	}
 }

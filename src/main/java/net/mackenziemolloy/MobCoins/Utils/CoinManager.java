@@ -78,7 +78,7 @@ public class CoinManager implements MobCoin {
 
 	}
 
-	public void setMobCoins(Player setter, String receiverName, String amountString, Boolean silent) {
+	public void setMobCoins(Player setter, String receiverName, String amountString, boolean silent) {
 
 		MobCoins mobCoins = MobCoins.getInstance();
 
@@ -125,7 +125,7 @@ public class CoinManager implements MobCoin {
 
 	}
 
-	public void setMobCoins(ConsoleCommandSender setter, String receiverName, String amountString, Boolean silent) {
+	public void setMobCoins(ConsoleCommandSender setter, String receiverName, String amountString, boolean silent) {
 
 		MobCoins mobCoins = MobCoins.getInstance();
 
@@ -172,7 +172,7 @@ public class CoinManager implements MobCoin {
 
 	}
 
-	public void transferMobCoins(Player sender, String receiverName, String amountString, Boolean silent) {
+	public void transferMobCoins(Player sender, String receiverName, String amountString, boolean silent) {
 
 		MobCoins mobCoins = MobCoins.getInstance();
 
@@ -262,7 +262,8 @@ public class CoinManager implements MobCoin {
 		return 0.0;
 	}
 
-	public String getBalanceTop(Integer page) {
+	@Override
+	public String getBalanceTop(int page) {
 
 		if (page < 1)
 			page = 1;

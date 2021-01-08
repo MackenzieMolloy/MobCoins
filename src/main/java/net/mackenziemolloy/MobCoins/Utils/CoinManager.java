@@ -1,11 +1,12 @@
-package net.mackenziemolloy.MobCoins.Utils;
+package net.mackenziemolloy.mobCoins.utils;
 
-import net.mackenziemolloy.MobCoins.MobCoins;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import net.mackenziemolloy.mobCoins.MobCoins;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,9 +1,10 @@
-package net.mackenziemolloy.MobCoins.Hooks;
+package net.mackenziemolloy.mobCoins.hooks;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.mackenziemolloy.MobCoins.MobCoins;
-import net.mackenziemolloy.MobCoins.Utils.Generic;
+import net.mackenziemolloy.mobCoins.MobCoins;
+import net.mackenziemolloy.mobCoins.utils.Generic;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 

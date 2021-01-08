@@ -1,6 +1,5 @@
-package net.mackenziemolloy.MobCoins;
+package net.mackenziemolloy.mobCoins;
 
-import net.mackenziemolloy.MobCoins.Utils.CoinManager;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import net.mackenziemolloy.mobCoins.utils.CoinManager;
 
 import java.util.concurrent.CompletableFuture;
 

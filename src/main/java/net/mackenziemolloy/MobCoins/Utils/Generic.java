@@ -1,4 +1,4 @@
-package net.mackenziemolloy.MobCoins.Utils;
+package net.mackenziemolloy.mobCoins.utils;
 
 import java.text.DecimalFormat;
 

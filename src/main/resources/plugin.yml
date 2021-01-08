@@ -1,6 +1,6 @@
 name: MobCoins
 author: Mackenzie Molloy
-main: net.mackenziemolloy.MobCoins.MobCoins
+main: net.mackenziemolloy.mobcoins.MobCoins
 api-version: 1.8
 version: 1.0
 softdepend: [ShopGUIPlus, PlaceholderAPI]

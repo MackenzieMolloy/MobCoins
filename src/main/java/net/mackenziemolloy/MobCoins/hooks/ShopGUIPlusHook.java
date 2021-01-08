@@ -1,7 +1,6 @@
-package net.mackenziemolloy.MobCoins.Hooks;
+package net.mackenziemolloy.mobcoins.hooks;
 
-import net.mackenziemolloy.MobCoins.Hooks.EconomyHook;
-import net.mackenziemolloy.MobCoins.MobCoins;
+import net.mackenziemolloy.mobcoins.MobCoins;
 
 public class ShopGUIPlusHook {
 

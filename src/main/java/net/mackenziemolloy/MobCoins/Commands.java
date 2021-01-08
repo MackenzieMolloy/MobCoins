@@ -1,4 +1,6 @@
-package net.mackenziemolloy.mobCoins;
+package net.mackenziemolloy.mobcoins;
+
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -9,9 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import net.mackenziemolloy.mobCoins.utils.CoinManager;
-
-import java.util.concurrent.CompletableFuture;
+import net.mackenziemolloy.mobcoins.utils.CoinManager;
 
 public class Commands implements CommandExecutor {
 

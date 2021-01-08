@@ -1,15 +1,14 @@
-package net.mackenziemolloy.mobCoins.hooks;
-
-import net.brcdev.shopgui.ShopGuiPlusApi;
-import net.brcdev.shopgui.provider.economy.EconomyProvider;
-import net.mackenziemolloy.mobCoins.MobCoins;
-import net.mackenziemolloy.mobCoins.utils.CoinManager;
-
-import org.bukkit.entity.Player;
+package net.mackenziemolloy.mobcoins.hooks;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.entity.Player;
+
+import net.brcdev.shopgui.provider.economy.EconomyProvider;
+import net.mackenziemolloy.mobcoins.MobCoins;
+import net.mackenziemolloy.mobcoins.utils.CoinManager;
 
 public class EconomyHook extends EconomyProvider {
 

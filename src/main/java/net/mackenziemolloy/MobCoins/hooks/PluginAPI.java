@@ -1,4 +1,4 @@
-package net.mackenziemolloy.mobCoins.hooks;
+package net.mackenziemolloy.mobcoins.hooks;
 
 public class PluginAPI {
 

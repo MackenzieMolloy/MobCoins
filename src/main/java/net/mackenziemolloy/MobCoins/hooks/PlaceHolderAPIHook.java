@@ -1,12 +1,11 @@
-package net.mackenziemolloy.mobCoins.hooks;
-
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.mackenziemolloy.mobCoins.MobCoins;
-import net.mackenziemolloy.mobCoins.utils.Generic;
+package net.mackenziemolloy.mobcoins.hooks;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.mackenziemolloy.mobcoins.MobCoins;
+import net.mackenziemolloy.mobcoins.utils.Generic;
 
 public class PlaceHolderAPIHook extends PlaceholderExpansion implements Listener  {
 

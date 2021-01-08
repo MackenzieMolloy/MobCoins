@@ -1,4 +1,10 @@
-package net.mackenziemolloy.mobCoins.utils;
+package net.mackenziemolloy.mobcoins.utils;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -6,10 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import net.mackenziemolloy.mobCoins.MobCoins;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import net.mackenziemolloy.mobcoins.MobCoins;
 
 public class CoinManager {
 

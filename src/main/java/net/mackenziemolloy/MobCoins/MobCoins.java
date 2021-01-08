@@ -2,7 +2,7 @@
 // MobCoins (Built against 1.8)
 //   By: Mackenzie Molloy
 //
-package net.mackenziemolloy.mobCoins;
+package net.mackenziemolloy.mobcoins;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +10,11 @@ import java.io.IOException;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.mackenziemolloy.mobCoins.hooks.PlaceHolderAPIHook;
-import net.mackenziemolloy.mobCoins.hooks.PluginAPI;
-import net.mackenziemolloy.mobCoins.hooks.ShopGUIPlusHook;
-import net.mackenziemolloy.mobCoins.listeners.EntityDeathListener;
-import net.mackenziemolloy.mobCoins.utils.CommentedConfiguration;
+import net.mackenziemolloy.mobcoins.hooks.PlaceHolderAPIHook;
+import net.mackenziemolloy.mobcoins.hooks.PluginAPI;
+import net.mackenziemolloy.mobcoins.hooks.ShopGUIPlusHook;
+import net.mackenziemolloy.mobcoins.listeners.EntityDeathListener;
+import net.mackenziemolloy.mobcoins.utils.CommentedConfiguration;
 
 public class MobCoins extends JavaPlugin {
 

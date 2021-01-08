@@ -1,4 +1,4 @@
-package net.mackenziemolloy.mobCoins.listeners;
+package net.mackenziemolloy.mobcoins.listeners;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import net.mackenziemolloy.mobCoins.MobCoins;
-import net.mackenziemolloy.mobCoins.utils.CoinManager;
+import net.mackenziemolloy.mobcoins.MobCoins;
+import net.mackenziemolloy.mobcoins.utils.CoinManager;
 
 public class EntityDeathListener implements Listener {
 

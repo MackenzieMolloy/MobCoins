@@ -9,8 +9,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import net.mackenziemolloy.mobcoins.MobCoins;
 import net.mackenziemolloy.mobcoins.api.MobCoin;
 
-import java.util.Objects;
-
 public class EntityDeathListener implements Listener {
 
 	private final MobCoins mobCoins;
@@ -38,7 +36,7 @@ public class EntityDeathListener implements Listener {
 
 			}
 
-			if (Objects.requireNonNull(mobCoins.configFile.getConfigurationSection("options.mobs"))
+			if (mobCoins.configFile.getConfigurationSection("options.mobs")
 					.contains(killed.getType().toString().toUpperCase())) {
 
 				this.mobCoin.addMobCoins(killer.getPlayer(), mobCoins.configFile

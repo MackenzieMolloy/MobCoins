@@ -6,18 +6,18 @@ import org.bukkit.entity.Player;
 
 public interface MobCoin {
 
-	void removeMobCoins(OfflinePlayer offlinePlayer, double value);
+	public void removeMobCoins(OfflinePlayer offlinePlayer, double value);
 	
-	void addMobCoins(OfflinePlayer offlinePlayer, double value);
+	public void addMobCoins(OfflinePlayer offlinePlayer, double value);
 	
-	double getBalance(OfflinePlayer player);
+	public double getBalance(OfflinePlayer player);
 
-	String getBalanceTop(int i);
+	public String getBalanceTop(int i);
 
-	void setMobCoins(ConsoleCommandSender console, String string, String string2, boolean b);
+	public void setMobCoins(ConsoleCommandSender console, String string, String string2, boolean b);
 
-	void setMobCoins(Player sender, String string, String string2, boolean b);
+	public void setMobCoins(Player sender, String string, String string2, boolean b);
 
-	void transferMobCoins(Player sender, String string, String string2, boolean b);
+	public void transferMobCoins(Player sender, String string, String string2, boolean b);
 	
 }

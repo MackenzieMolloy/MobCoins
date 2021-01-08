@@ -101,7 +101,7 @@ public class CoinManager implements MobCoin {
 		else {
 
 			Player addTo = Bukkit.getPlayerExact(receiverName);
-			double amountToAdd = Double.valueOf(amountString);
+			Double amountToAdd = Double.valueOf(amountString);
 
 			if (mobCoins.configFile.getBoolean("options.negative_balance")) {
 
@@ -148,7 +148,7 @@ public class CoinManager implements MobCoin {
 		else {
 
 			Player addTo = Bukkit.getPlayerExact(receiverName);
-			double amountToAdd = Double.valueOf(amountString);
+			Double amountToAdd = Double.valueOf(amountString);
 
 			if (mobCoins.configFile.getBoolean("options.negative_balance")) {
 
@@ -178,7 +178,7 @@ public class CoinManager implements MobCoin {
 
 		if (Bukkit.getPlayerExact(receiverName) == null) {
 
-			if (!silent) {
+			if (silent == false) {
 				String playerNotFound = ChatColor.translateAlternateColorCodes('&',
 						mobCoins.configFile.getString("messages.player_not_found").replace("{player}", receiverName));
 				sender.sendMessage(playerNotFound);
@@ -189,7 +189,7 @@ public class CoinManager implements MobCoin {
 		else if (sender.getName().equalsIgnoreCase(receiverName)
 				&& !mobCoins.configFile.getBoolean("options.can_pay_self")) {
 
-			if (!silent) {
+			if (silent == false) {
 				String cantPaySelf = ChatColor.translateAlternateColorCodes('&',
 						mobCoins.configFile.getString("messages.balance_pay_self"));
 				sender.sendMessage(cantPaySelf);
@@ -199,7 +199,7 @@ public class CoinManager implements MobCoin {
 
 		else if (!NumberUtils.isNumber(amountString)) {
 
-			if (!silent) {
+			if (silent == false) {
 				String notANumber = ChatColor.translateAlternateColorCodes('&',
 						mobCoins.configFile.getString("messages.not_a_number").replace("{number}", amountString));
 				sender.sendMessage(notANumber);
@@ -208,7 +208,7 @@ public class CoinManager implements MobCoin {
 
 		else if (Double.valueOf(amountString) < mobCoins.configFile.getDouble("options.minimum_pay_amount")) {
 
-			if (!silent) {
+			if (silent == false) {
 
 				String cantPayLessThan = ChatColor.translateAlternateColorCodes('&',
 						mobCoins.configFile.getString("messages.balance_pay_less_than"));
@@ -231,12 +231,12 @@ public class CoinManager implements MobCoin {
 		else {
 
 			Player receiver = Bukkit.getPlayer(receiverName);
-			double amount = Double.valueOf(amountString);
+			Double amount = Double.valueOf(amountString);
 
 			this.addMobCoins(receiver, amount);
 			this.removeMobCoins(sender, amount);
 
-			if (!silent) {
+			if (silent == false) {
 
 				String mobCoinsReceived = ChatColor.translateAlternateColorCodes('&',
 						mobCoins.configFile.getString("messages.balance_pay_paid_received")
@@ -299,7 +299,7 @@ public class CoinManager implements MobCoin {
 			String playerUUID = sortedMap.keySet().toArray()[i].toString();
 			String playerBalance = sortedMap.values().toArray()[i].toString();
 
-			String playerName;
+			String playerName = "";
 
 			if (Bukkit.getPlayer(UUID.fromString(playerUUID)) != null) {
 				playerName = Bukkit.getPlayer(UUID.fromString(playerUUID)).getName();
